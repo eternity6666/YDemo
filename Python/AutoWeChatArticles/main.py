@@ -8,6 +8,9 @@ import json
 load_dotenv()
 API_KEY = os.getenv("DEEPSEEK_API_KEY")
 API_URL = os.getenv("DEEPSEEK_API_ENDPOINT")
+OUTPUT_DIR = os.getenv("OUTPUT_DIR")
+date = datetime.datetime.now().strftime('%Y-%m-%d')
+outputDir = f"{OUTPUT_DIR}/{date}"
 
 def useDeepSeek(contentList):
     if len(contentList) == 0:
@@ -121,7 +124,7 @@ def collectContentList(orderList):
         })
     return contentList
 
-def tryWriteContent(jsonContent, date):
+def tryWriteContent(jsonContent):
     if jsonContent is None:
         print('No content to output')
         return
@@ -130,7 +133,7 @@ def tryWriteContent(jsonContent, date):
             if 'message' in jsonContent['choices'][0]:
                 if 'content' in jsonContent['choices'][0]['message']:
                     content = jsonContent['choices'][0]['message']['content']
-                    with open(f'./article/{date}/content.md', 'w') as f:
+                    with open(f'{outputDir}/content.md', 'w') as f:
                         f.write(content)
                     print('Write content.md success')
 
@@ -143,20 +146,19 @@ def collectContents():
     if len(contentList) == 0:
         print('No content to collect')
         return
-    date = datetime.datetime.now().strftime('%Y-%m-%d')
-    if not os.path.exists(f'./article/{date}'):
-        os.makedirs(f'./article/{date}')
-    with open(f'./article/{date}/files.txt', 'w') as f:
+    if not os.path.exists(outputDir):
+        os.makedirs(outputDir)
+    with open(f'{outputDir}/files.txt', 'w') as f:
         f.write(json.dumps(contentList, ensure_ascii=False, indent=4))
     print('Write files.txt success')
     jsonContent = useDeepSeek(contentList)
     if len(jsonContent) == 0:
         print('No content to output')
         return
-    with open(f'./article/{date}/result.json', 'w') as f:
+    with open(f'{outputDir}/result.json', 'w') as f:
         f.write(json.dumps(jsonContent, ensure_ascii=False, indent=4))
     print('Write result.json success')
-    tryWriteContent(jsonContent, date)
+    tryWriteContent(jsonContent)
 
 if __name__ == "__main__":
     collectContents()
