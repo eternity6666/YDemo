@@ -171,7 +171,6 @@ document.getElementById('generateBtn').addEventListener('click', async () => {
     const fontUrl = document.getElementById('fontUrl').value;
     const textInput = document.getElementById('textInput').value;
 
-    
     if (!fontUrl || !textInput) {
         alert('请填写字体URL和文字内容');
         return;
@@ -220,6 +219,7 @@ document.getElementById('exportBtn').addEventListener('click', async () => {
             
             // 应用透明背景设置
             if (options.transparent) {
+                ctx.fillStyle = 'rgba(0, 0, 0, 0)';
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
             } else {
                 ctx.fillStyle = '#ffffff';
