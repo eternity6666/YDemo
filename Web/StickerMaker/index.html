@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sticker Maker</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1>Sticker Maker</h1>
+    <div class="container">
+        <div class="controls">
+            <label for="fontUrl">字体 URL:</label>
+            <input type="url" id="fontUrl" placeholder="输入字体文件 URL">
+            
+            <label for="textInput">输入文字:</label>
+            <input type="text" id="textInput" placeholder="用逗号分隔的文字">
+            
+            <button id="generateBtn">生成贴纸</button>
+            <button id="exportBtn" disabled>导出全部</button>
+        </div>
+        <div class="sticker-container"></div>
+    </div>
+    <script src="script.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+</body>
+</html>

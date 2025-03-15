@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>自动获取图片链接并导出</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+        input, button {
+            margin: 5px;
+            padding: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h1>自动获取图片链接并导出</h1>
+    <label for="urlInput">输入网页链接:</label>
+    <input type="text" id="urlInput" placeholder="请输入网页链接">
+    <button id="fetchButton">获取图片链接</button>
+    <label for="imageQuality">图片清晰度:</label>
+    <select id="imageQuality">
+        <option value="100">高</option>
+        <option value="70">中</option>
+        <option value="40">低</option>
+    </select>
+    <button id="exportButton">导出图片</button>
+    <ul id="imageList"></ul>
+
+    <script>
+        const urlInput = document.getElementById('urlInput');
+        const fetchButton = document.getElementById('fetchButton');
+        const imageList = document.getElementById('imageList');
+        const exportButton = document.getElementById('exportButton');
+        const imageQuality = document.getElementById('imageQuality');
+
+        fetchButton.addEventListener('click', async () => {
+            const url = urlInput.value;
+            try {
+                const response = await fetch(url);
+                const html = await response.text();
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(html, 'text/html');
+                const images = doc.querySelectorAll('img');
+                imageList.innerHTML = '';
+                images.forEach(img => {
+                    const listItem = document.createElement('li');
+                    const imgUrl = img.src;
+                    listItem.textContent = imgUrl;
+                    imageList.appendChild(listItem);
+                });
+            } catch (error) {
+                console.error('获取图片链接时出错:', error);
+            }
+        });
+
+        exportButton.addEventListener('click', () => {
+            const images = imageList.querySelectorAll('li');
+            images.forEach((img, index) => {
+                const imgUrl = img.textContent;
+                const link = document.createElement('a');
+                link.href = imgUrl;
+                link.download = `image_${index}.jpg`;
+                link.click();
+            });
+        });
+    </script>
+</body>
+</html>
