@@ -101,3 +101,49 @@ h1 {
     display: inline-block;
     margin-right: 10px;
 }
+
+/* 短语计数器样式 */
+.phrase-counter {
+    color: #666;
+    font-size: 0.8em;
+    margin-top: 5px;
+}
+
+/* 自定义样式 */
+.controls {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.form-check-inline {
+    margin-right: 1rem;
+}
+
+.sticker-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1rem;
+    padding: 1rem;
+    background-color: #f8f9fa;
+    border-radius: 0.5rem;
+}
+
+.history-item {
+    margin: 0.25rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.btn-outline-secondary {
+    transition: all 0.2s;
+}
+
+.btn-outline-secondary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.form-check {
+    margin-bottom: 0.5rem;
+}

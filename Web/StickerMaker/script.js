@@ -20,61 +20,47 @@ const STORAGE_KEYS = {
 const MAX_HISTORY = 20;
 
 // 加载历史记录
+// 在 loadHistory 函数中
 function loadHistory() {
     const fontUrls = JSON.parse(localStorage.getItem(STORAGE_KEYS.FONT_URLS) || '[]');
     const textInputs = JSON.parse(localStorage.getItem(STORAGE_KEYS.TEXT_INPUTS) || '[]');
-    
-    // 创建历史记录容器
-    const historyContainer = document.createElement('div');
-    historyContainer.className = 'history-container';
-    historyContainer.style.display = 'grid';
-    historyContainer.style.gridTemplateColumns = 'repeat(auto-fit, minmax(150px, 1fr))';
-    historyContainer.style.gap = '10px';
-    historyContainer.style.margin = '10px 0';
-    
+
+    const fontHistory = document.getElementById('fontHistory');
+    const textHistory = document.getElementById('textHistory');
+
+    // 清空历史记录
+    fontHistory.innerHTML = '';
+    textHistory.innerHTML = '';
+
     // 添加字体历史记录
     if (fontUrls.length > 0) {
-        const fontHistory = document.createElement('div');
-        fontHistory.className = 'font-history';
         fontUrls.forEach(url => {
-            const item = document.createElement('div');
-            item.className = 'history-item';
-            item.textContent = url;
-            item.style.cursor = 'pointer';
-            item.style.padding = '5px';
-            item.style.border = '1px solid #ccc';
-            item.style.borderRadius = '4px';
+            const item = document.createElement('button');
+            item.className = 'btn btn-outline-secondary btn-sm me-2 mb-2';
+            item.innerHTML = `<i class="fas fa-link me-1"></i>${url}`;
             item.addEventListener('click', () => {
                 document.getElementById('fontUrl').value = url;
             });
             fontHistory.appendChild(item);
         });
-        historyContainer.appendChild(fontHistory);
+    } else {
+        fontHistory.innerHTML = '<div class="text-muted">暂无字体历史记录</div>';
     }
-    
+
     // 添加文字历史记录
     if (textInputs.length > 0) {
-        const textHistory = document.createElement('div');
-        textHistory.className = 'text-history';
         textInputs.forEach(text => {
-            const item = document.createElement('div');
-            item.className = 'history-item';
-            item.textContent = text;
-            item.style.cursor = 'pointer';
-            item.style.padding = '5px';
-            item.style.border = '1px solid #ccc';
-            item.style.borderRadius = '4px';
+            const item = document.createElement('button');
+            item.className = 'btn btn-outline-secondary btn-sm me-2 mb-2';
+            item.innerHTML = `<i class="fas fa-comment me-1"></i>${text}`;
             item.addEventListener('click', () => {
                 document.getElementById('textInput').value = text;
             });
             textHistory.appendChild(item);
         });
-        historyContainer.appendChild(textHistory);
+    } else {
+        textHistory.innerHTML = '<div class="text-muted">暂无文字历史记录</div>';
     }
-    
-    // 插入到页面
-    const controls = document.querySelector('.controls');
-    controls.insertBefore(historyContainer, controls.firstChild);
 }
 
 // 保存历史记录
@@ -134,6 +120,14 @@ function generateSticker(text, font, options = {}) {
 }
 
 // 添加控制选项
+// 在页面加载时初始化
+window.addEventListener('load', () => {
+    loadHistory();
+    // 移除 addOptions() 调用，因为选项已经在 HTML 中定义
+});
+
+// 移除或注释掉 addOptions 函数
+/*
 function addOptions() {
     const controls = document.querySelector('.controls');
     
@@ -155,37 +149,38 @@ function addOptions() {
     controls.appendChild(strokeLabel);
     controls.appendChild(strokeCheckbox);
 }
+*/
 
-// 页面加载时初始化
-window.addEventListener('load', () => {
-    loadHistory();
-    addOptions();
+// 添加短语数量提示
+const textInput = document.getElementById('textInput');
+const counter = document.createElement('div');
+counter.className = 'phrase-counter';
+counter.style.color = '#666';
+counter.style.fontSize = '0.8em';
+counter.style.marginTop = '5px';
+textInput.parentNode.insertBefore(counter, textInput.nextSibling);
+
+// 监听输入变化
+textInput.addEventListener('input', () => {
+    const phrases = textInput.value.split(',').filter(p => p.trim() !== '');
+    counter.textContent = `${phrases.length} 个`;
 });
 
 // 主逻辑
 document.getElementById('generateBtn').addEventListener('click', async () => {
     const fontUrl = document.getElementById('fontUrl').value;
     const textInput = document.getElementById('textInput').value;
-    
-    // 保存历史记录
-    saveHistory(STORAGE_KEYS.FONT_URLS, fontUrl);
-    saveHistory(STORAGE_KEYS.TEXT_INPUTS, textInput);
-    
-    // 生成选项
-    // 修复选项传递
-    const options = {
-        transparent: document.getElementById('transparentBg').checked,
-        stroke: document.getElementById('textStroke').checked,
-        strokeColor: '#000000',
-        strokeWidth: 2,
-        textColor: '#000000' // 添加文字颜色
-    };
+
     
     if (!fontUrl || !textInput) {
         alert('请填写字体URL和文字内容');
         return;
     }
     
+    // 保存历史记录
+    saveHistory(STORAGE_KEYS.FONT_URLS, fontUrl);
+    saveHistory(STORAGE_KEYS.TEXT_INPUTS, textInput);
+
     // 加载字体
     const fontLoaded = await loadFont(fontUrl);
     if (!fontLoaded) {
@@ -211,13 +206,34 @@ document.getElementById('generateBtn').addEventListener('click', async () => {
 // 修改导出功能
 document.getElementById('exportBtn').addEventListener('click', async () => {
     const images = document.querySelectorAll('.sticker-container img');
+    const options = {
+        transparent: document.getElementById('transparentBg').checked
+    };
+    
     const results = await Promise.all(
         Array.from(images).map(async (img) => {
-            const response = await fetch(img.src);
-            const blob = await response.blob();
-            // 确保文件名以 .png 结尾
-            const filename = img.alt.endsWith('.png') ? img.alt : `${img.alt}.png`;
-            return {blob, filename};
+            // 重新生成贴纸以确保透明背景设置正确
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+            canvas.width = img.naturalWidth;
+            canvas.height = img.naturalHeight;
+            
+            // 应用透明背景设置
+            if (options.transparent) {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+            } else {
+                ctx.fillStyle = '#ffffff';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+            }
+            
+            ctx.drawImage(img, 0, 0);
+            
+            return new Promise((resolve) => {
+                canvas.toBlob(blob => {
+                    const filename = img.alt.endsWith('.png') ? img.alt : `${img.alt}.png`;
+                    resolve({blob, filename});
+                }, 'image/png', 1);
+            });
         })
     );
 
