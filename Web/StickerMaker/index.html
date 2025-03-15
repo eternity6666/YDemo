@@ -4,24 +4,74 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sticker Maker</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
-<body>
-    <h1>Sticker Maker</h1>
-    <div class="container">
-        <div class="controls">
-            <label for="fontUrl">字体 URL:</label>
-            <input type="url" id="fontUrl" placeholder="输入字体文件 URL">
-            
-            <label for="textInput">输入文字:</label>
-            <input type="text" id="textInput" placeholder="用逗号分隔的文字">
-            
-            <button id="generateBtn">生成贴纸</button>
-            <button id="exportBtn" disabled>导出全部</button>
+<body class="bg-light">
+    <div class="container my-5">
+        <h1 class="text-center mb-4 display-4 fw-bold text-primary">
+            <i class="fas fa-sticky-note me-2"></i>Sticker Maker
+        </h1>
+        <div class="card shadow">
+            <div class="card-body">
+                <!-- 第一行：输入和按钮 -->
+                <div class="row g-3 mb-4">
+                    <div class="col-md-4">
+                        <label for="fontUrl" class="form-label fw-bold">
+                            <i class="fas fa-font me-2"></i>字体 URL
+                        </label>
+                        <input type="url" class="form-control" id="fontUrl" placeholder="输入字体文件 URL">
+                    </div>
+                    <div class="col-md-4">
+                        <label for="textInput" class="form-label fw-bold">
+                            <i class="fas fa-pen me-2"></i>输入文字
+                        </label>
+                        <input type="text" class="form-control" id="textInput" placeholder="用逗号分隔的文字">
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="transparentBg">
+                            <label class="form-check-label fw-bold" for="transparentBg">透明背景</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="textStroke">
+                            <label class="form-check-label fw-bold" for="textStroke">文字描边</label>
+                        </div>
+                    </div>
+                    <div class="col-md-2 d-grid gap-2">
+                        <button id="generateBtn" class="btn btn-primary btn-lg">
+                            <i class="fas fa-magic me-2"></i>生成
+                        </button>
+                        <button id="exportBtn" class="btn btn-success btn-lg" disabled>
+                            <i class="fas fa-download me-2"></i>导出
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 第二行：字体历史记录 -->
+                <div class="mb-4">
+                    <h6 class="fw-bold mb-2">
+                        <i class="fas fa-history me-2"></i>字体历史记录
+                    </h6>
+                    <div id="fontHistory" class="d-flex flex-wrap gap-2"></div>
+                </div>
+
+                <!-- 第三行：文字历史记录 -->
+                <div class="mb-4">
+                    <h6 class="fw-bold mb-2">
+                        <i class="fas fa-history me-2"></i>文字历史记录
+                    </h6>
+                    <div id="textHistory" class="d-flex flex-wrap gap-2"></div>
+                </div>
+
+                <!-- 第四行：贴纸网格 -->
+                <div class="sticker-container"></div>
+            </div>
         </div>
-        <div class="sticker-container"></div>
     </div>
     <script src="script.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
