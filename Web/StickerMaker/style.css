@@ -14,7 +14,7 @@ h1 {
 }
 
 .container {
-    max-width: max-content;
+    max-width: -webkit-fill-available;
     background: white;
     padding: 20px;
     border-radius: 8px;
