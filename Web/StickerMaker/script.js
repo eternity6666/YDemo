@@ -246,16 +246,16 @@ document.getElementById('generateBtn').addEventListener('click', async () => {
         return;
     }
     
-    // 保存历史记录
-    saveHistory(STORAGE_KEYS.FONT_URLS, fontUrl);
-    saveHistory(STORAGE_KEYS.TEXT_INPUTS, textInput);
-
     // 加载字体
     const fontLoaded = await loadFont(fontUrl);
     if (!fontLoaded) {
         alert('字体加载失败，请检查URL');
         return;
     }
+
+    // 保存历史记录
+    saveHistory(STORAGE_KEYS.FONT_URLS, fontUrl);
+    saveHistory(STORAGE_KEYS.TEXT_INPUTS, textInput);
     
     // 清空容器
     const container = document.querySelector('.sticker-container');
