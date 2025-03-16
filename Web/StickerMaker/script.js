@@ -13,7 +13,8 @@ function loadFont(url) {
 // 本地存储键名
 const STORAGE_KEYS = {
     FONT_URLS: 'stickerMaker_fontUrls',
-    TEXT_INPUTS: 'stickerMaker_textInputs'
+    TEXT_INPUTS: 'stickerMaker_textInputs',
+    OPTIONS: 'stickerMaker_options',
 };
 
 // 最大历史记录数量
@@ -79,8 +80,13 @@ function generateSticker(text, font, options = {}) {
         canvas.height = options.stickerHeight * scale;
         const ctx = canvas.getContext('2d');
 
-        ctx.fillStyle = options.bgColor;
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        // 透明背景
+        if (options.transparentBg) {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+        } else {
+            ctx.fillStyle = options.bgColor || '#ffffff';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+        }
 
         // 计算字体大小
         let fontSize = 100 * scale;
@@ -89,7 +95,7 @@ function generateSticker(text, font, options = {}) {
             ctx.font = `${fontSize}px ${font}`;
             textWidth = ctx.measureText(text).width;
             fontSize -= 2;
-        } while (textWidth > 230 * scale && fontSize > 10);
+        } while (textWidth > (canvas.width - 10) && fontSize > 10);
         
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
@@ -115,6 +121,105 @@ function generateSticker(text, font, options = {}) {
     });
 }
 
+function initConfigArea() {
+    const configArea = document.getElementById('configArea');
+    const options = JSON.parse(localStorage.getItem(STORAGE_KEYS.OPTIONS) || '{}');
+    configList = [
+        {
+            label: '贴纸宽度',
+            inputType: 'number',
+            id: 'stickerWidth',
+            value: options.stickerWidth || 200,
+        },
+        {
+            label: '贴纸高度',
+            inputType: 'number',
+            id:'stickerHeight',
+            value: options.stickerHeight || 200,
+        },
+        {
+            label: '描边宽度',
+            inputType: 'number',
+            id:'strokeWidth',
+            value: options.strokeWidth || 20,
+        },
+        {
+            label: '文字颜色',
+            inputType: 'color',
+            id:'textColor',
+            value: options.textColor || '#000000',
+        },
+        {
+            label: '描边颜色',
+            inputType: 'color',
+            id:'strokeColor',
+            value: options.strokeColor || '#ffffff',
+        },
+        {
+            label: '透明背景',
+            inputType: 'checkbox',
+            id:'transparentBg',
+            value: options.transparentBg || false,
+        },
+        {
+            label: '文字描边',
+            inputType: 'checkbox',
+            id:'textStroke',
+            value: options.textStroke || false,
+        },
+    ];
+    configList.forEach(config => {
+        const div = document.createElement('div');
+        div.className = 'col-md-3';
+        inputClassName = ''
+        if (config.inputType === 'checkbox') {
+            inputClassName = 'form-check-input';
+        } else if (config.inputType === 'color') {
+            inputClassName = 'form-control-color';
+        }
+        div.innerHTML = `
+            <div class="d-flex align-items-center">
+                <label class="form-label me-2 mb-0" style="min-width: 80px;">${config.label}</label>
+                <input type="${config.inputType}" 
+                       class="form-control form-control-lg ${inputClassName}" 
+                       id="${config.id}" 
+                       value="${config.value}"
+                       ${config.inputType === 'checkbox' ? 'checked' : ''}
+                       style="${config.inputType === 'checkbox' ? 'margin: 0;' : ''}">
+            </div>
+        `;
+        configArea.appendChild(div);
+    })
+}
+
+function initButtonArea() {
+    const buttonArea = document.getElementById('buttonArea');
+    buttonList = [
+        {
+            label: '生成贴纸',
+            id:'generateBtn',
+            className: 'btn btn-primary',
+            icon: 'fas fa-paint-brush',
+        },
+        {
+            label: '导出贴纸',
+            id:'exportBtn',
+            className: 'btn btn-success',
+            icon: 'fas fa-download',
+        }
+    ];
+    buttonList.forEach(button => {
+        const buttonElement = document.createElement('button');
+        buttonElement.className = `${button.className} btn-lg`;
+        buttonElement.id = button.id;
+        buttonElement.innerHTML = `<i class="${button.icon}"></i>${button.label}`;
+        buttonArea.appendChild(buttonElement);
+    })
+}
+
+initConfigArea();
+initButtonArea();
+
 // 添加控制选项
 // 在页面加载时初始化
 window.addEventListener('load', () => {
@@ -123,16 +228,11 @@ window.addEventListener('load', () => {
 
 // 添加短语数量提示
 const textInput = document.getElementById('textInput');
-const counter = document.createElement('div');
-counter.className = 'phrase-counter';
-counter.style.color = '#666';
-counter.style.fontSize = '0.8em';
-counter.style.marginTop = '5px';
-textInput.parentNode.insertBefore(counter, textInput.nextSibling);
+const counter = document.getElementById('phrase-counter');
 
-// 监听输入变化
+// 监听 value 变化
 textInput.addEventListener('input', () => {
-    const phrases = textInput.value.split(',').filter(p => p.trim() !== '');
+    const phrases = textInput.value.split(',').filter(p => p.trim()!== '');
     counter.textContent = `${phrases.length} 个`;
 });
 
@@ -163,12 +263,13 @@ document.getElementById('generateBtn').addEventListener('click', async () => {
     options = {
         stickerWidth: document.getElementById('stickerWidth').value,
         stickerHeight: document.getElementById('stickerHeight').value,
-        bgColor: document.getElementById('bgColor').value,
+        transparentBg: document.getElementById('transparentBg').value,
         textColor: document.getElementById('textColor').value,
         stroke: document.getElementById('textStroke').checked,
         strokeColor: document.getElementById('strokeColor').value,
         strokeWidth: document.getElementById('strokeWidth').value
     }
+    localStorage.setItem(STORAGE_KEYS.OPTIONS, JSON.stringify(options));
 
     // 生成贴纸
     const texts = textInput.split(',');
