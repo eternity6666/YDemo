@@ -97,10 +97,11 @@ function saveHistory(key, value) {
 // 生成贴纸
 function generateSticker(text, font, options = {}) {
     return new Promise((resolve) => {
-        const scale = 2;
+        const scale = 3;
         const canvas = document.createElement('canvas');
         canvas.width = options.stickerWidth * scale;
         canvas.height = options.stickerHeight * scale;
+        let stickerPadding = options.stickerPadding * scale;
         const ctx = canvas.getContext('2d');
 
         // 透明背景
@@ -112,13 +113,18 @@ function generateSticker(text, font, options = {}) {
         }
 
         // 计算字体大小
-        let fontSize = 100 * scale;
+        let fontSize = Math.min(
+            canvas.width - stickerPadding,
+            canvas.height - stickerPadding
+        ) / 2;
         let textWidth;
+        let textHeight;
         do {
             ctx.font = `${fontSize}px ${font}`;
             textWidth = ctx.measureText(text).width;
+            textHeight = ctx.measureText(text).height;
             fontSize -= 2;
-        } while (textWidth > (canvas.width - 10) && fontSize > 10);
+        } while (textWidth > (canvas.width - stickerPadding) && textHeight > (canvas.height - stickerPadding) && fontSize > options.strokeWidth);
         
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
@@ -161,10 +167,22 @@ function initConfigArea() {
             value: options.stickerHeight || 200,
         },
         {
+            label: '贴纸间距',
+            inputType: 'number',
+            id:'stickerPadding',
+            value: options.stickerPadding || 20,
+        },
+        {
             label: '描边宽度',
             inputType: 'number',
             id:'strokeWidth',
             value: options.strokeWidth || 20,
+        },
+        {
+            label: '背景颜色',
+            inputType: 'color',
+            id:'bgColor',
+            value: options.bgColor || '#ffffff',
         },
         {
             label: '文字颜色',
@@ -266,7 +284,7 @@ document.getElementById('generateBtn').addEventListener('click', async () => {
     const localFontFile = document.getElementById('localFont').files[0];
     const textInput = document.getElementById('textInput').value;
 
-    if (!fontUrl && !localFont || !textInput) {
+    if ((!fontUrl && !localFontFile) || !textInput) {
         alert('请填写字体URL或本地字体文件和文字内容');
         return;
     }
@@ -287,11 +305,13 @@ document.getElementById('generateBtn').addEventListener('click', async () => {
     options = {
         stickerWidth: document.getElementById('stickerWidth').value,
         stickerHeight: document.getElementById('stickerHeight').value,
-        transparentBg: document.getElementById('transparentBg').value,
+        transparentBg: document.getElementById('transparentBg').checked,
         textColor: document.getElementById('textColor').value,
+        bgColor: document.getElementById('bgColor').value,
         stroke: document.getElementById('textStroke').checked,
         strokeColor: document.getElementById('strokeColor').value,
-        strokeWidth: document.getElementById('strokeWidth').value
+        strokeWidth: document.getElementById('strokeWidth').value,
+        stickerPadding: document.getElementById('stickerPadding').value
     }
     localStorage.setItem(STORAGE_KEYS.OPTIONS, JSON.stringify(options));
 
