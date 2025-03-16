@@ -75,17 +75,13 @@ function generateSticker(text, font, options = {}) {
     return new Promise((resolve) => {
         const scale = 2;
         const canvas = document.createElement('canvas');
-        canvas.width = 240 * scale;
-        canvas.height = 240 * scale;
+        canvas.width = options.stickerWidth * scale;
+        canvas.height = options.stickerHeight * scale;
         const ctx = canvas.getContext('2d');
-        
-        // 修复透明背景
-        ctx.clearRect(0, 0, canvas.width, canvas.height); // 先清空画布
-        if (!options.transparent) {
-            ctx.fillStyle = '#ffffff';
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-        }
-        
+
+        ctx.fillStyle = options.bgColor;
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
         // 计算字体大小
         let fontSize = 100 * scale;
         let textWidth;
@@ -100,8 +96,8 @@ function generateSticker(text, font, options = {}) {
         
         // 文字描边
         if (options.stroke) {
-            ctx.strokeStyle = options.strokeColor || '#000000';
-            ctx.lineWidth = options.strokeWidth || 2;
+            ctx.strokeStyle = options.strokeColor || '#ffffff';
+            ctx.lineWidth = options.strokeWidth || 20;
             ctx.strokeText(text, canvas.width / 2, canvas.height / 2);
         }
         
@@ -112,8 +108,8 @@ function generateSticker(text, font, options = {}) {
             const img = new Image();
             img.src = URL.createObjectURL(blob);
             img.alt = text;
-            img.style.width = '240px';
-            img.style.height = '240px';
+            img.style.width = `${options.stickerWidth}px`;
+            img.style.height = `${options.stickerHeight}px`;
             resolve(img);
         }, 'image/png', 1);
     });
@@ -123,33 +119,7 @@ function generateSticker(text, font, options = {}) {
 // 在页面加载时初始化
 window.addEventListener('load', () => {
     loadHistory();
-    // 移除 addOptions() 调用，因为选项已经在 HTML 中定义
 });
-
-// 移除或注释掉 addOptions 函数
-/*
-function addOptions() {
-    const controls = document.querySelector('.controls');
-    
-    // 透明背景选项
-    const transparentLabel = document.createElement('label');
-    transparentLabel.innerHTML = '透明背景:';
-    const transparentCheckbox = document.createElement('input');
-    transparentCheckbox.type = 'checkbox';
-    transparentCheckbox.id = 'transparentBg';
-    controls.appendChild(transparentLabel);
-    controls.appendChild(transparentCheckbox);
-    
-    // 文字描边选项
-    const strokeLabel = document.createElement('label');
-    strokeLabel.innerHTML = '文字描边:';
-    const strokeCheckbox = document.createElement('input');
-    strokeCheckbox.type = 'checkbox';
-    strokeCheckbox.id = 'textStroke';
-    controls.appendChild(strokeLabel);
-    controls.appendChild(strokeCheckbox);
-}
-*/
 
 // 添加短语数量提示
 const textInput = document.getElementById('textInput');
@@ -190,11 +160,20 @@ document.getElementById('generateBtn').addEventListener('click', async () => {
     // 清空容器
     const container = document.querySelector('.sticker-container');
     container.innerHTML = '';
-    
+    options = {
+        stickerWidth: document.getElementById('stickerWidth').value,
+        stickerHeight: document.getElementById('stickerHeight').value,
+        bgColor: document.getElementById('bgColor').value,
+        textColor: document.getElementById('textColor').value,
+        stroke: document.getElementById('textStroke').checked,
+        strokeColor: document.getElementById('strokeColor').value,
+        strokeWidth: document.getElementById('strokeWidth').value
+    }
+
     // 生成贴纸
     const texts = textInput.split(',');
     for (const text of texts) {
-        const img = await generateSticker(text.trim(), 'CustomFont');
+        const img = await generateSticker(text.trim(), 'CustomFont', options);
         container.appendChild(img); // Now we're appending a proper Node
     }
     
@@ -205,34 +184,17 @@ document.getElementById('generateBtn').addEventListener('click', async () => {
 // 修改导出功能
 document.getElementById('exportBtn').addEventListener('click', async () => {
     const images = document.querySelectorAll('.sticker-container img');
-    const options = {
-        transparent: document.getElementById('transparentBg').checked
-    };
-    
+
     const results = await Promise.all(
         Array.from(images).map(async (img) => {
-            // 重新生成贴纸以确保透明背景设置正确
-            const canvas = document.createElement('canvas');
-            const ctx = canvas.getContext('2d');
-            canvas.width = img.naturalWidth;
-            canvas.height = img.naturalHeight;
-            
-            // 应用透明背景设置
-            if (options.transparent) {
-                ctx.fillStyle = 'rgba(0, 0, 0, 0)';
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-            } else {
-                ctx.fillStyle = '#ffffff';
-                ctx.fillRect(0, 0, canvas.width, canvas.height);
-            }
-            
-            ctx.drawImage(img, 0, 0);
-            
             return new Promise((resolve) => {
-                canvas.toBlob(blob => {
-                    const filename = img.alt.endsWith('.png') ? img.alt : `${img.alt}.png`;
-                    resolve({blob, filename});
-                }, 'image/png', 1);
+                // 直接从img元素获取Blob
+                fetch(img.src)
+                    .then(response => response.blob())
+                    .then(blob => {
+                        const filename = img.alt.endsWith('.png')? img.alt : `${img.alt}.png`;
+                        resolve({blob, filename});
+                    });
             });
         })
     );
