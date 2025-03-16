@@ -108,7 +108,9 @@ h1 {
 }
 
 .sticker-container {
-    flex: 1 1 auto;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
     padding: 1rem;
     background-color: #f8f9fa;
     border-radius: 0.5rem;
