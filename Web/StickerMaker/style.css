@@ -83,17 +83,6 @@ h1 {
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
-/* 贴纸容器样式 */
-.sticker-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-    gap: 20px;
-    padding: 20px;
-    background-color: #f8f9fa;
-    border-radius: 8px;
-    margin-top: 20px;
-}
-
 /* 选项样式 */
 .controls label[for="transparentBg"],
 .controls label[for="textStroke"] {
@@ -119,13 +108,10 @@ h1 {
 }
 
 .sticker-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-    gap: 1rem;
+    flex: 1 1 auto;
     padding: 1rem;
     background-color: #f8f9fa;
     border-radius: 0.5rem;
-    min-height: 80vh;
 }
 
 .history-item {
