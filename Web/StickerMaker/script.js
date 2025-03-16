@@ -1,7 +1,30 @@
 // 加载字体
-function loadFont(url) {
+function loadFont(url, localFontFile) {
+    if (localFontFile) {
+        const fileReader = new FileReader();
+        fileReader.readAsArrayBuffer(localFontFile);
+        return new Promise((resolve, reject) => {
+            fileReader.onerror = () => {
+                reject('读取本地字体文件失败');
+            };
+            fileReader.onload = () => {
+                const buffer = fileReader.result;
+                const arrayBuffer = new Uint8Array(buffer);
+                const blob = new Blob([arrayBuffer], { type: 'font/ttf' });
+                const font = new FontFace('CustomFont', `url(${URL.createObjectURL(blob)})`);
+                return font.load().then(() => {
+                    document.fonts.add(font);
+                    resolve(true);
+                }).catch(err => {
+                    console.error('字体加载失败:', err);
+                    resolve(false);
+                });
+            }
+        });
+    }
     const font = new FontFace('CustomFont', `url(${url})`);
     return font.load().then(() => {
+        saveHistory(STORAGE_KEYS.FONT_URLS, url);
         document.fonts.add(font);
         return true;
     }).catch(err => {
@@ -229,32 +252,33 @@ window.addEventListener('load', () => {
 // 添加短语数量提示
 const textInput = document.getElementById('textInput');
 const counter = document.getElementById('phrase-counter');
+const splitChars = /[/,;，、；]/;
 
 // 监听 value 变化
 textInput.addEventListener('input', () => {
-    const phrases = textInput.value.split(',').filter(p => p.trim()!== '');
+    const phrases = textInput.value.split(splitChars).filter(p => p.trim()!== '');
     counter.textContent = `${phrases.length} 个`;
 });
 
 // 主逻辑
 document.getElementById('generateBtn').addEventListener('click', async () => {
     const fontUrl = document.getElementById('fontUrl').value;
+    const localFontFile = document.getElementById('localFont').files[0];
     const textInput = document.getElementById('textInput').value;
 
-    if (!fontUrl || !textInput) {
-        alert('请填写字体URL和文字内容');
+    if (!fontUrl && !localFont || !textInput) {
+        alert('请填写字体URL或本地字体文件和文字内容');
         return;
     }
     
     // 加载字体
-    const fontLoaded = await loadFont(fontUrl);
+    const fontLoaded = await loadFont(fontUrl, localFontFile);
     if (!fontLoaded) {
         alert('字体加载失败，请检查URL');
         return;
     }
 
     // 保存历史记录
-    saveHistory(STORAGE_KEYS.FONT_URLS, fontUrl);
     saveHistory(STORAGE_KEYS.TEXT_INPUTS, textInput);
     
     // 清空容器
@@ -272,7 +296,7 @@ document.getElementById('generateBtn').addEventListener('click', async () => {
     localStorage.setItem(STORAGE_KEYS.OPTIONS, JSON.stringify(options));
 
     // 生成贴纸
-    const texts = textInput.split(',');
+    const texts = textInput.split(splitChars).filter(p => p.trim()!== '');
     for (const text of texts) {
         const img = await generateSticker(text.trim(), 'CustomFont', options);
         container.appendChild(img); // Now we're appending a proper Node
