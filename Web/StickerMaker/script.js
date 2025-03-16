@@ -124,7 +124,7 @@ function generateSticker(text, font, options = {}) {
             textWidth = ctx.measureText(text).width;
             textHeight = ctx.measureText(text).height;
             fontSize -= 2;
-        } while (textWidth > (canvas.width - stickerPadding) && textHeight > (canvas.height - stickerPadding) && fontSize > options.strokeWidth);
+        } while ((textWidth > (canvas.width - stickerPadding) || textHeight > (canvas.height - stickerPadding)) && fontSize > options.strokeWidth);
         
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
