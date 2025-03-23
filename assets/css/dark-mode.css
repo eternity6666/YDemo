@@ -23,6 +23,14 @@
     color: var(--text-primary) !important;
 }
 
+[data-theme="dark"] .card-body {
+    color: var(--text-primary) !important;
+}
+
+[data-theme="dark"] .text-muted {
+    color: var(--text-secondary) !important;
+}
+
 [data-theme="dark"] .card {
     background: var(--card-bg);
     border: 1px solid var(--border-color);

@@ -4,28 +4,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
+
     <!-- SEO Meta Tags -->
     <meta name="description" content="在线贴纸制作工具，支持自定义字体、文字和样式，轻松创建个性化贴纸。">
     <meta name="keywords" content="贴纸制作, 在线工具, 字体工具, 贴纸生成器, 文字贴纸">
     <meta name="author" content="工具百宝箱">
-    
+
     <!-- Open Graph Meta Tags -->
     <meta property="og:title" content="Sticker Maker - 在线贴纸制作工具">
     <meta property="og:description" content="在线贴纸制作工具，支持自定义字体、文字和样式，轻松创建个性化贴纸。">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://blog.yangzuohua.top/YDemo/Web/StickerMaker/">
-    
+
     <!-- Twitter Card Meta Tags -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Sticker Maker - 在线贴纸制作工具">
     <meta name="twitter:description" content="在线贴纸制作工具，支持自定义字体、文字和样式，轻松创建个性化贴纸。">
-    <meta name="twitter:url" content="https://blog.yangzuohua.top/YDemo/Web/StickerMaker/"> 
-    
+    <meta name="twitter:url" content="https://blog.yangzuohua.top/YDemo/Web/StickerMaker/">
+
     <!-- 其他 Meta Tags -->
     <meta name="robots" content="index, follow">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    
+
     <title>Sticker Maker - 在线贴纸制作工具</title>
 
     <!-- Google tag (gtag.js) -->
@@ -45,6 +45,7 @@
     <link href="../../assets/css/style.css" rel="stylesheet">
     <link href="../../assets/css/dark-mode.css" rel="stylesheet">
     <link href="../../assets/css/light-mode.css" rel="stylesheet">
+    <link href="./style.css" rel="stylesheet">
 
     <!-- Google AdSense -->
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3908779126130629"
@@ -75,10 +76,10 @@
                         <label for="fontUrl" class="form-label fw-bold">
                             <i class="fas fa-font me-2"></i>字体 URL 或者本地字体
                         </label>
-                        <textarea class="form-control input-area" id="fontUrl" placeholder="输入字体文件 URL"></textarea>
-                        <input placeholder="选择字体文件" class="form-control" type="file" id="localFont"
+                        <textarea class="form-control" id="fontUrl" placeholder="输入字体文件 URL"></textarea>
+                        <input placeholder="选择字体文件" class="form-control mt-2" type="file" id="localFont"
                             accept=".ttf,.otf,.woff,.woff2,.ttc">
-                        <div id="fontHistory" class="scrollable"></div>
+                        <div id="fontHistory" class="scrollable mt-2"></div>
                     </div>
                 </div>
             </div>
@@ -88,8 +89,8 @@
                         <label for="textInput" class="form-label fw-bold">
                             <i class="fas fa-pen me-2"></i>输入文字<span class="phrase-counter" id="phrase-counter"></span>
                         </label>
-                        <textarea class="form-control input-area" id="textInput" placeholder="用逗号分隔的文字"></textarea>
-                        <div id="textHistory" class="scrollable"></div>
+                        <textarea class="form-control" id="textInput" placeholder="用逗号分隔的文字"></textarea>
+                        <div id="textHistory" class="scrollable mt-2"></div>
                     </div>
                 </div>
             </div>

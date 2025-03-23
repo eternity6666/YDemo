@@ -23,6 +23,10 @@
     color: var(--text-primary) !important;
 }
 
+[data-theme="light"] .card-body {
+    color: var(--text-primary) !important;
+}
+
 [data-theme="light"] .card {
     background: var(--card-bg);
     border: 1px solid var(--border-color);

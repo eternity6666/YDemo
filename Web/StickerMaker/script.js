@@ -60,7 +60,7 @@ function loadHistory() {
     if (fontUrls.length > 0) {
         fontUrls.forEach(url => {
             const item = document.createElement('button');
-            item.className = 'btn btn-outline-secondary btn-sm me-2 mb-2';
+            item.className = 'btn btn-outline-secondary btn-sm me-2';
             item.innerHTML = `<i class="fas fa-link me-1"></i>${url}`;
             item.addEventListener('click', () => {
                 document.getElementById('fontUrl').value = url;
@@ -75,7 +75,7 @@ function loadHistory() {
     if (textInputs.length > 0) {
         textInputs.forEach(text => {
             const item = document.createElement('button');
-            item.className = 'btn btn-outline-secondary btn-sm me-2 mb-2';
+            item.className = 'btn btn-outline-secondary btn-sm me-2';
             item.innerHTML = `<i class="fas fa-comment me-1"></i>${text}`;
             item.addEventListener('click', () => {
                 document.getElementById('textInput').value = text;
