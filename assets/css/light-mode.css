@@ -1,0 +1,83 @@
+/* 浅色模式样式 */
+[data-theme="light"] {
+    --bg-primary: #ffffff;
+    --bg-secondary: #f8f9fa;
+    --text-primary: #212529;
+    --text-secondary: #6c757d;
+    --border-color: #dee2e6;
+    --card-bg: rgba(255, 255, 255, 0.9);
+    --hover-bg: #f1f3f5;
+}
+
+[data-theme="light"] body {
+    background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+    color: var(--text-primary);
+}
+
+[data-theme="light"] .navbar {
+    background-color: var(--bg-primary) !important;
+    border-bottom: 1px solid var(--border-color);
+}
+
+[data-theme="light"] .navbar-brand {
+    color: var(--text-primary) !important;
+}
+
+[data-theme="light"] .card {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+}
+
+[data-theme="light"] .card:hover {
+    background: var(--hover-bg);
+}
+
+[data-theme="light"] .card-title {
+    color: var(--text-primary);
+}
+
+[data-theme="light"] .card-text {
+    color: var(--text-secondary);
+}
+
+[data-theme="light"] .card-icon {
+    color: #0d6efd;
+}
+
+[data-theme="light"] footer {
+    background: var(--bg-secondary);
+    border-top: 1px solid var(--border-color);
+}
+
+[data-theme="light"] .theme-switch {
+    color: var(--text-primary);
+}
+
+/* 浅色模式下的表单元素 */
+[data-theme="light"] input,
+[data-theme="light"] select,
+[data-theme="light"] textarea {
+    background-color: var(--bg-primary);
+    border-color: var(--border-color);
+    color: var(--text-primary);
+}
+
+[data-theme="light"] input:focus,
+[data-theme="light"] select:focus,
+[data-theme="light"] textarea:focus {
+    background-color: var(--bg-primary);
+    border-color: #0d6efd;
+    color: var(--text-primary);
+}
+
+/* 浅色模式下的按钮 */
+[data-theme="light"] .btn-outline-secondary {
+    color: var(--text-primary);
+    border-color: var(--border-color);
+}
+
+[data-theme="light"] .btn-outline-secondary:hover {
+    background-color: var(--hover-bg);
+    border-color: var(--border-color);
+    color: var(--text-primary);
+} 

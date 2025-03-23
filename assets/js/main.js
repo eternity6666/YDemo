@@ -14,9 +14,6 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // 初始化工具提示
     initializeTooltips();
-    
-    // 初始化暗色模式
-    initializeDarkMode();
 });
 
 // 页面过渡动画
@@ -62,18 +59,6 @@ function initializeTooltips() {
         tooltip.textContent = tooltipText;
         element.appendChild(tooltip);
     });
-}
-
-// 暗色模式
-function initializeDarkMode() {
-    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
-    
-    function updateTheme(e) {
-        document.body.classList.toggle('dark-mode', e.matches);
-    }
-    
-    prefersDark.addListener(updateTheme);
-    updateTheme(prefersDark);
 }
 
 // 页面加载进度条
