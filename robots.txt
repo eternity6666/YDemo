@@ -1,0 +1,11 @@
+User-agent: *
+Allow: /
+Allow: /assets/
+Allow: /Web/
+Disallow: /result/
+Disallow: /temp/
+Disallow: /.git/
+Disallow: /.vscode/
+Disallow: /.idea/
+
+Sitemap: https://blog.yangzuohua.top/YDemo/sitemap.xml 
