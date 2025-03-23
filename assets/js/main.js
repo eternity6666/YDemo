@@ -6,119 +6,169 @@ gtag('config', 'G-6Z8KV5R1TW');
 
 // 页面加载完成后执行
 document.addEventListener('DOMContentLoaded', function() {
-    // 初始化工具卡片点击事件
-    initializeToolCards();
-    
-    // 初始化深色模式
-    initializeDarkMode();
-    
     // 初始化页面过渡动画
     initializePageTransitions();
     
     // 初始化加载状态
     initializeLoadingState();
+    
+    // 初始化工具提示
+    initializeTooltips();
+    
+    // 初始化暗色模式
+    initializeDarkMode();
 });
 
-// 初始化工具卡片
-function initializeToolCards() {
-    const cards = document.querySelectorAll('.card');
-    cards.forEach(card => {
-        card.addEventListener('click', function(e) {
-            if (!e.target.classList.contains('btn')) {
-                const link = this.querySelector('.btn');
-                if (link) {
-                    showLoading();
-                    window.location.href = link.href;
-                }
-            }
-        });
-    });
-}
-
-// 初始化深色模式
-function initializeDarkMode() {
-    // 检查本地存储中的主题设置
-    const savedTheme = localStorage.getItem('theme');
-    if (savedTheme) {
-        document.documentElement.setAttribute('data-theme', savedTheme);
-    } else {
-        // 检查系统主题偏好
-        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-        document.documentElement.setAttribute('data-theme', prefersDark ? 'dark' : 'light');
-    }
-    
-    // 添加主题切换按钮
-    const navbar = document.querySelector('.navbar .container');
-    const themeSwitch = document.createElement('div');
-    themeSwitch.className = 'theme-switch ms-auto';
-    themeSwitch.innerHTML = '<i class="fas fa-moon"></i>';
-    themeSwitch.title = '切换主题';
-    navbar.appendChild(themeSwitch);
-    
-    // 主题切换事件
-    themeSwitch.addEventListener('click', function() {
-        const currentTheme = document.documentElement.getAttribute('data-theme');
-        const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-        document.documentElement.setAttribute('data-theme', newTheme);
-        localStorage.setItem('theme', newTheme);
-        
-        // 更新图标
-        this.innerHTML = newTheme === 'dark' ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
-    });
-}
-
-// 初始化页面过渡动画
+// 页面过渡动画
 function initializePageTransitions() {
-    const elements = document.querySelectorAll('.card, .navbar, footer');
-    elements.forEach(element => {
-        element.classList.add('page-transition');
-    });
+    const elements = document.querySelectorAll('.card, .navbar, .footer');
     
-    // 使用 Intersection Observer 检测元素可见性
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
-                entry.target.classList.add('visible');
+                entry.target.classList.add('page-transition', 'visible');
             }
         });
     }, {
         threshold: 0.1
     });
-    
+
     elements.forEach(element => {
+        element.classList.add('page-transition');
         observer.observe(element);
     });
 }
 
-// 初始化加载状态
+// 加载状态
 function initializeLoadingState() {
-    // 创建加载遮罩
     const loading = document.createElement('div');
     loading.className = 'loading';
-    loading.innerHTML = '<div class="loading-spinner"></div>';
+    loading.innerHTML = '<div class="spinner"></div>';
     document.body.appendChild(loading);
-    
-    // 页面加载完成时隐藏加载遮罩
-    window.addEventListener('load', function() {
-        hideLoading();
+
+    window.addEventListener('load', () => {
+        loading.style.display = 'none';
     });
 }
 
-// 显示加载状态
-function showLoading() {
-    document.querySelector('.loading').classList.add('active');
+// 工具提示
+function initializeTooltips() {
+    const tooltips = document.querySelectorAll('[data-tooltip]');
+    
+    tooltips.forEach(element => {
+        const tooltipText = element.getAttribute('data-tooltip');
+        const tooltip = document.createElement('span');
+        tooltip.className = 'tooltip-text';
+        tooltip.textContent = tooltipText;
+        element.appendChild(tooltip);
+    });
 }
 
-// 隐藏加载状态
-function hideLoading() {
-    document.querySelector('.loading').classList.remove('active');
+// 暗色模式
+function initializeDarkMode() {
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
+    
+    function updateTheme(e) {
+        document.body.classList.toggle('dark-mode', e.matches);
+    }
+    
+    prefersDark.addListener(updateTheme);
+    updateTheme(prefersDark);
 }
 
-// 添加工具提示
-function addTooltip(element, text) {
-    element.classList.add('tooltip');
-    const tooltipText = document.createElement('span');
-    tooltipText.className = 'tooltip-text';
-    tooltipText.textContent = text;
-    element.appendChild(tooltipText);
+// 页面加载进度条
+let progressBar = null;
+
+function createProgressBar() {
+    progressBar = document.createElement('div');
+    progressBar.className = 'progress-bar';
+    document.body.appendChild(progressBar);
+}
+
+function updateProgressBar(progress) {
+    if (!progressBar) {
+        createProgressBar();
+    }
+    progressBar.style.width = `${progress}%`;
+}
+
+// 平滑滚动
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function(e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+            target.scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            });
+        }
+    });
+});
+
+// 响应式导航栏
+const navbar = document.querySelector('.navbar');
+let lastScroll = 0;
+
+window.addEventListener('scroll', () => {
+    const currentScroll = window.pageYOffset;
+    
+    if (currentScroll <= 0) {
+        navbar.classList.remove('scroll-up');
+        return;
+    }
+    
+    if (currentScroll > lastScroll && !navbar.classList.contains('scroll-down')) {
+        navbar.classList.remove('scroll-up');
+        navbar.classList.add('scroll-down');
+    } else if (currentScroll < lastScroll && navbar.classList.contains('scroll-down')) {
+        navbar.classList.remove('scroll-down');
+        navbar.classList.add('scroll-up');
+    }
+    
+    lastScroll = currentScroll;
+});
+
+// 性能优化
+const debounce = (func, wait) => {
+    let timeout;
+    return function executedFunction(...args) {
+        const later = () => {
+            clearTimeout(timeout);
+            func(...args);
+        };
+        clearTimeout(timeout);
+        timeout = setTimeout(later, wait);
+    };
+};
+
+// 图片懒加载
+if ('loading' in HTMLImageElement.prototype) {
+    const images = document.querySelectorAll('img[loading="lazy"]');
+    images.forEach(img => {
+        img.src = img.dataset.src;
+    });
+} else {
+    const script = document.createElement('script');
+    script.src = 'https://cdnjs.cloudflare.com/ajax/libs/lazysizes/5.3.2/lazysizes.min.js';
+    document.body.appendChild(script);
+}
+
+// 错误处理
+window.addEventListener('error', function(e) {
+    console.error('页面错误:', e.message);
+    // 这里可以添加错误报告逻辑
+});
+
+// 离线支持
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js')
+            .then(registration => {
+                console.log('ServiceWorker 注册成功:', registration);
+            })
+            .catch(error => {
+                console.log('ServiceWorker 注册失败:', error);
+            });
+    });
 } 

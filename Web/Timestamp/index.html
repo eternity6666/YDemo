@@ -3,142 +3,239 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>时间戳转换器 - 工具百宝箱</title>
-    <meta name="description" content="在线时间戳转换工具，支持Unix时间戳和日期时间的相互转换，支持多种时间格式">
+    <meta name="description" content="在线时间戳转换工具，支持 Unix 时间戳与日期时间格式互转，支持多种时间格式，完全免费，无需注册即可使用。">
+    <meta name="keywords" content="时间戳转换,Unix时间戳,日期转换,时间工具,在线工具,免费工具,时间戳转换器">
+    <meta name="author" content="工具百宝箱">
+    <meta name="robots" content="index, follow, max-image-preview:large">
+    <meta name="theme-color" content="#0d6efd">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://blog.yangzuohua.top/YDemo/Web/Timestamp/">
+    <meta property="og:title" content="时间戳转换器 - 在线时间戳转换工具">
+    <meta property="og:description" content="在线时间戳转换工具，支持 Unix 时间戳与日期时间格式互转，支持多种时间格式，完全免费，无需注册即可使用。">
+    <meta property="og:image" content="https://blog.yangzuohua.top/YDemo/assets/images/og-image.jpg">
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://blog.yangzuohua.top/YDemo/Web/Timestamp/">
+    <meta property="twitter:title" content="时间戳转换器 - 在线时间戳转换工具">
+    <meta property="twitter:description" content="在线时间戳转换工具，支持 Unix 时间戳与日期时间格式互转，支持多种时间格式，完全免费，无需注册即可使用。">
+    <meta property="twitter:image" content="https://blog.yangzuohua.top/YDemo/assets/images/og-image.jpg">
+    
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://blog.yangzuohua.top/YDemo/Web/Timestamp/">
+    
+    <title>时间戳转换器 - 在线时间戳转换工具 | 工具百宝箱</title>
+    
+    <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <!-- 自定义样式 -->
     <link href="../../assets/css/style.css" rel="stylesheet">
-    <style>
-        .timestamp-card {
-            background: var(--card-bg);
-            border-radius: 15px;
-            padding: 20px;
-            margin-bottom: 20px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s ease;
-        }
-        .timestamp-card:hover {
-            transform: translateY(-5px);
-        }
-        .timestamp-input {
-            font-family: monospace;
-            font-size: 1.1em;
-        }
-        .timestamp-result {
-            font-family: monospace;
-            font-size: 1.1em;
-            background: var(--input-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            padding: 10px;
-            margin-top: 10px;
-        }
-        .timestamp-format {
-            font-size: 0.9em;
-            color: var(--text-muted);
-            margin-top: 5px;
-        }
-    </style>
+    <link href="../../assets/css/dark-mode.css" rel="stylesheet">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="../../assets/images/favicon.svg">
+    
+    <!-- 结构化数据 -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "时间戳转换器",
+        "url": "https://blog.yangzuohua.top/YDemo/Web/Timestamp/",
+        "description": "在线时间戳转换工具，支持 Unix 时间戳与日期时间格式互转，支持多种时间格式，完全免费，无需注册即可使用。",
+        "applicationCategory": "UtilityApplication",
+        "operatingSystem": "Web Browser",
+        "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD"
+        },
+        "featureList": [
+            "Unix 时间戳转换",
+            "日期时间格式转换",
+            "多种时间格式支持",
+            "实时时间显示",
+            "复制结果",
+            "批量转换"
+        ]
+    }
+    </script>
 </head>
 <body>
     <!-- 导航栏 -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <nav class="navbar navbar-expand-lg navbar-light bg-white" role="navigation" aria-label="主导航">
         <div class="container">
-            <a class="navbar-brand" href="../../index.html">
-                <i class="fas fa-tools me-2"></i>工具百宝箱
+            <a class="navbar-brand fw-bold" href="../../index.html" aria-label="工具百宝箱首页">
+                <i class="fas fa-toolbox me-2" aria-hidden="true"></i>工具百宝箱
             </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <a class="nav-link" href="../../index.html">首页</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" href="#">时间戳转换器</a>
-                    </li>
-                </ul>
-            </div>
         </div>
     </nav>
 
-    <!-- 主要内容 -->
-    <div class="container my-5">
-        <!-- 面包屑导航 -->
-        <nav aria-label="breadcrumb">
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="../../index.html">首页</a></li>
-                <li class="breadcrumb-item active">时间戳转换器</li>
-            </ol>
-        </nav>
+    <!-- 面包屑导航 -->
+    <nav aria-label="面包屑导航" class="container mt-3">
+        <ol class="breadcrumb mb-0">
+            <li class="breadcrumb-item"><a href="../../index.html">首页</a></li>
+            <li class="breadcrumb-item active" aria-current="page">时间戳转换器</li>
+        </ol>
+    </nav>
 
+    <!-- 主内容 -->
+    <main class="container my-5" role="main">
         <!-- 工具说明 -->
         <div class="card mb-4">
             <div class="card-body">
-                <h5 class="card-title">时间戳转换器</h5>
+                <h1 class="card-title h3">时间戳转换器</h1>
                 <p class="card-text">
-                    在线时间戳转换工具，支持Unix时间戳和日期时间的相互转换。
-                    支持多种时间格式，包括：
+                    在线时间戳转换工具，支持 Unix 时间戳与日期时间格式互转，支持多种时间格式。
+                    完全免费，无需注册即可使用。
                 </p>
-                <ul>
-                    <li>Unix时间戳（秒/毫秒）</li>
-                    <li>ISO 8601格式</li>
-                    <li>自定义格式</li>
-                </ul>
+                <div class="alert alert-info">
+                    <i class="fas fa-info-circle me-2"></i>
+                    提示：Unix 时间戳是从 1970 年 1 月 1 日 00:00:00 UTC 开始计算的秒数。
+                </div>
+            </div>
+        </div>
+
+        <!-- 当前时间 -->
+        <div class="card mb-4">
+            <div class="card-body">
+                <h2 class="card-title h5 mb-4">当前时间</h2>
+                <div class="row g-3">
+                    <div class="col-md-4">
+                        <div class="input-group">
+                            <span class="input-group-text">Unix 时间戳</span>
+                            <input type="text" class="form-control" id="currentTimestamp" readonly>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="input-group">
+                            <span class="input-group-text">本地时间</span>
+                            <input type="text" class="form-control" id="currentLocalTime" readonly>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="input-group">
+                            <span class="input-group-text">UTC 时间</span>
+                            <input type="text" class="form-control" id="currentUTCTime" readonly>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 
         <!-- 时间戳转日期 -->
-        <div class="timestamp-card">
-            <h5>时间戳转日期</h5>
-            <div class="input-group mb-3">
-                <input type="text" class="form-control timestamp-input" id="timestampInput" placeholder="输入时间戳（秒或毫秒）">
-                <button class="btn btn-primary" id="convertToDateBtn">
-                    <i class="fas fa-arrow-right me-2"></i>转换
-                </button>
+        <div class="card mb-4">
+            <div class="card-body">
+                <h2 class="card-title h5 mb-4">时间戳转日期</h2>
+                <form id="timestampForm" class="mb-4">
+                    <div class="mb-3">
+                        <label for="timestamp" class="form-label">Unix 时间戳</label>
+                        <div class="input-group">
+                            <input type="text" class="form-control" id="timestamp" placeholder="请输入 Unix 时间戳">
+                            <button type="button" class="btn btn-primary" id="timestampToDateBtn">
+                                <i class="fas fa-arrow-right me-2"></i>转换
+                            </button>
+                        </div>
+                    </div>
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label">本地时间</label>
+                                <input type="text" class="form-control" id="localTime" readonly>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label">UTC 时间</label>
+                                <input type="text" class="form-control" id="utcTime" readonly>
+                            </div>
+                        </div>
+                    </div>
+                </form>
             </div>
-            <div class="timestamp-result" id="dateResult"></div>
-            <div class="timestamp-format" id="dateFormat"></div>
         </div>
 
         <!-- 日期转时间戳 -->
-        <div class="timestamp-card">
-            <h5>日期转时间戳</h5>
-            <div class="input-group mb-3">
-                <input type="datetime-local" class="form-control" id="dateInput">
-                <button class="btn btn-primary" id="convertToTimestampBtn">
-                    <i class="fas fa-arrow-right me-2"></i>转换
-                </button>
+        <div class="card mb-4">
+            <div class="card-body">
+                <h2 class="card-title h5 mb-4">日期转时间戳</h2>
+                <form id="dateForm" class="mb-4">
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="date" class="form-label">日期时间</label>
+                                <input type="datetime-local" class="form-control" id="date">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="timezone" class="form-label">时区</label>
+                                <select class="form-select" id="timezone">
+                                    <option value="local">本地时间</option>
+                                    <option value="utc">UTC 时间</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <button type="button" class="btn btn-primary" id="dateToTimestampBtn">
+                            <i class="fas fa-arrow-right me-2"></i>转换
+                        </button>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Unix 时间戳</label>
+                        <div class="input-group">
+                            <input type="text" class="form-control" id="resultTimestamp" readonly>
+                            <button type="button" class="btn btn-primary" id="copyTimestampBtn">
+                                <i class="fas fa-copy me-2"></i>复制
+                            </button>
+                        </div>
+                    </div>
+                </form>
             </div>
-            <div class="timestamp-result" id="timestampResult"></div>
-            <div class="timestamp-format" id="timestampFormat"></div>
         </div>
 
-        <!-- 当前时间 -->
-        <div class="timestamp-card">
-            <h5>当前时间</h5>
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="timestamp-result" id="currentDate"></div>
-                    <div class="timestamp-format" id="currentDateFormat"></div>
-                </div>
-                <div class="col-md-6">
-                    <div class="timestamp-result" id="currentTimestamp"></div>
-                    <div class="timestamp-format" id="currentTimestampFormat"></div>
+        <!-- 使用说明 -->
+        <div class="card mt-4">
+            <div class="card-body">
+                <h2 class="card-title h5 mb-4">使用说明</h2>
+                <div class="row">
+                    <div class="col-md-6">
+                        <h3 class="h6">时间戳转日期</h3>
+                        <ul class="list-unstyled">
+                            <li><i class="fas fa-check text-success me-2"></i>支持 Unix 时间戳转换</li>
+                            <li><i class="fas fa-check text-success me-2"></i>显示本地时间和 UTC 时间</li>
+                            <li><i class="fas fa-check text-success me-2"></i>支持毫秒级时间戳</li>
+                        </ul>
+                    </div>
+                    <div class="col-md-6">
+                        <h3 class="h6">日期转时间戳</h3>
+                        <ul class="list-unstyled">
+                            <li><i class="fas fa-check text-success me-2"></i>支持日期时间选择</li>
+                            <li><i class="fas fa-check text-success me-2"></i>支持本地和 UTC 时区</li>
+                            <li><i class="fas fa-check text-success me-2"></i>一键复制结果</li>
+                        </ul>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
+    </main>
 
     <!-- 页脚 -->
-    <footer class="footer mt-auto py-3 bg-dark text-light">
+    <footer class="py-4 mt-5" role="contentinfo">
         <div class="container text-center">
-            <p class="mb-0">© 2024 工具百宝箱. All rights reserved.</p>
+            <p class="mb-0">© 2025 工具百宝箱. All rights reserved.</p>
         </div>
     </footer>
 
+    <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- 自定义JS -->
+    <script src="../../assets/js/main.js"></script>
     <script src="script.js"></script>
 </body>
 </html> 

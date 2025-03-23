@@ -3,8 +3,30 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="URL 编解码器 - 在线进行 URL 编码和解码，支持批量处理">
-    <title>URL 编解码器 - 工具百宝箱</title>
+    <meta name="description" content="在线 URL 编解码工具，支持 URL 编码和解码，支持批量处理，支持文件上传，完全免费，无需注册即可使用。">
+    <meta name="keywords" content="URL编码,URL解码,URL转义,URL工具,在线工具,免费工具,URL编解码器">
+    <meta name="author" content="工具百宝箱">
+    <meta name="robots" content="index, follow, max-image-preview:large">
+    <meta name="theme-color" content="#0d6efd">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://blog.yangzuohua.top/YDemo/Web/URLEncoder/">
+    <meta property="og:title" content="URL 编解码器 - 在线 URL 编码解码工具">
+    <meta property="og:description" content="在线 URL 编解码工具，支持 URL 编码和解码，支持批量处理，支持文件上传，完全免费，无需注册即可使用。">
+    <meta property="og:image" content="https://blog.yangzuohua.top/YDemo/assets/images/og-image.jpg">
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://blog.yangzuohua.top/YDemo/Web/URLEncoder/">
+    <meta property="twitter:title" content="URL 编解码器 - 在线 URL 编码解码工具">
+    <meta property="twitter:description" content="在线 URL 编解码工具，支持 URL 编码和解码，支持批量处理，支持文件上传，完全免费，无需注册即可使用。">
+    <meta property="twitter:image" content="https://blog.yangzuohua.top/YDemo/assets/images/og-image.jpg">
+    
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://blog.yangzuohua.top/YDemo/Web/URLEncoder/">
+    
+    <title>URL 编解码器 - 在线 URL 编码解码工具 | 工具百宝箱</title>
     
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -16,12 +38,38 @@
     
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="../../assets/images/favicon.svg">
+    
+    <!-- 结构化数据 -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "URL 编解码器",
+        "url": "https://blog.yangzuohua.top/YDemo/Web/URLEncoder/",
+        "description": "在线 URL 编解码工具，支持 URL 编码和解码，支持批量处理，支持文件上传，完全免费，无需注册即可使用。",
+        "applicationCategory": "UtilityApplication",
+        "operatingSystem": "Web Browser",
+        "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD"
+        },
+        "featureList": [
+            "URL 编码",
+            "URL 解码",
+            "批量处理",
+            "文件上传",
+            "复制结果",
+            "下载结果"
+        ]
+    }
+    </script>
 </head>
 <body>
     <!-- 导航栏 -->
     <nav class="navbar navbar-expand-lg navbar-light bg-white" role="navigation" aria-label="主导航">
         <div class="container">
-            <a class="navbar-brand fw-bold" href="../../" aria-label="工具百宝箱首页">
+            <a class="navbar-brand fw-bold" href="../../index.html" aria-label="工具百宝箱首页">
                 <i class="fas fa-toolbox me-2" aria-hidden="true"></i>工具百宝箱
             </a>
         </div>
@@ -30,51 +78,95 @@
     <!-- 面包屑导航 -->
     <nav aria-label="面包屑导航" class="container mt-3">
         <ol class="breadcrumb mb-0">
-            <li class="breadcrumb-item"><a href="../../">首页</a></li>
+            <li class="breadcrumb-item"><a href="../../index.html">首页</a></li>
             <li class="breadcrumb-item active" aria-current="page">URL 编解码器</li>
         </ol>
     </nav>
 
     <!-- 主内容 -->
     <main class="container my-5" role="main">
-        <div class="row">
-            <div class="col-md-6">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">URL 编解码器</h5>
-                        <form id="urlForm">
-                            <div class="mb-3">
-                                <label for="input" class="form-label">输入内容</label>
-                                <textarea class="form-control" id="input" rows="6" placeholder="请输入要编码或解码的 URL"></textarea>
-                            </div>
-                            <div class="mb-3">
-                                <label for="file" class="form-label">或选择文件</label>
-                                <input type="file" class="form-control" id="file">
-                            </div>
-                            <div class="btn-group mb-3">
-                                <button type="button" class="btn btn-primary" id="encodeBtn">编码</button>
-                                <button type="button" class="btn btn-primary" id="decodeBtn">解码</button>
-                                <button type="button" class="btn btn-secondary" id="clearBtn">清除</button>
-                            </div>
-                        </form>
-                    </div>
+        <!-- 工具说明 -->
+        <div class="card mb-4">
+            <div class="card-body">
+                <h1 class="card-title h3">URL 编解码器</h1>
+                <p class="card-text">
+                    在线 URL 编解码工具，支持 URL 编码和解码，支持批量处理，支持文件上传。
+                    完全免费，无需注册即可使用。
+                </p>
+                <div class="alert alert-info">
+                    <i class="fas fa-info-circle me-2"></i>
+                    提示：URL 编码将特殊字符转换为 %XX 格式，解码则将 %XX 格式转换回原始字符。
                 </div>
             </div>
-            <div class="col-md-6">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">输出结果</h5>
-                        <div class="mb-3">
-                            <textarea class="form-control" id="output" rows="6" readonly></textarea>
-                        </div>
-                        <div class="btn-group">
-                            <button type="button" class="btn btn-success" id="copyBtn">
-                                <i class="fas fa-copy me-2"></i>复制结果
-                            </button>
-                            <button type="button" class="btn btn-info" id="downloadBtn" disabled>
-                                <i class="fas fa-download me-2"></i>下载结果
-                            </button>
-                        </div>
+        </div>
+
+        <!-- 输入区域 -->
+        <div class="card mb-4">
+            <div class="card-body">
+                <h2 class="card-title h5 mb-4">输入</h2>
+                <form id="urlForm" class="mb-4">
+                    <div class="mb-3">
+                        <label for="input" class="form-label">输入文本</label>
+                        <textarea class="form-control" id="input" rows="5" placeholder="请输入需要编码或解码的文本"></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="file" class="form-label">或上传文件</label>
+                        <input type="file" class="form-control" id="file" accept=".txt">
+                        <div class="form-text">支持 .txt 文件，文件内容将被读取到输入框中</div>
+                    </div>
+                    <div class="d-flex gap-2">
+                        <button type="button" class="btn btn-primary" id="encodeBtn">
+                            <i class="fas fa-lock me-2"></i>编码
+                        </button>
+                        <button type="button" class="btn btn-primary" id="decodeBtn">
+                            <i class="fas fa-lock-open me-2"></i>解码
+                        </button>
+                        <button type="button" class="btn btn-secondary" id="clearBtn">
+                            <i class="fas fa-trash me-2"></i>清除
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- 输出区域 -->
+        <div class="card">
+            <div class="card-body">
+                <h2 class="card-title h5 mb-4">输出结果</h2>
+                <div class="mb-3">
+                    <textarea class="form-control" id="output" rows="5" readonly></textarea>
+                </div>
+                <div class="d-flex gap-2">
+                    <button type="button" class="btn btn-primary" id="copyBtn">
+                        <i class="fas fa-copy me-2"></i>复制结果
+                    </button>
+                    <button type="button" class="btn btn-primary" id="downloadBtn" disabled>
+                        <i class="fas fa-download me-2"></i>下载结果
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 使用说明 -->
+        <div class="card mt-4">
+            <div class="card-body">
+                <h2 class="card-title h5 mb-4">使用说明</h2>
+                <div class="row">
+                    <div class="col-md-6">
+                        <h3 class="h6">编码说明</h3>
+                        <ul class="list-unstyled">
+                            <li><i class="fas fa-check text-success me-2"></i>支持中文、特殊字符编码</li>
+                            <li><i class="fas fa-check text-success me-2"></i>支持批量文本处理</li>
+                            <li><i class="fas fa-check text-success me-2"></i>支持文件上传处理</li>
+                        </ul>
+                    </div>
+                    <div class="col-md-6">
+                        <h3 class="h6">解码说明</h3>
+                        <ul class="list-unstyled">
+                            <li><i class="fas fa-check text-success me-2"></i>支持 %XX 格式解码</li>
+                            <li><i class="fas fa-check text-success me-2"></i>支持批量文本处理</li>
+                            <li><i class="fas fa-check text-success me-2"></i>支持文件上传处理</li>
+                        </ul>
                     </div>
                 </div>
             </div>
@@ -91,6 +183,7 @@
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <!-- 自定义JS -->
+    <script src="../../assets/js/main.js"></script>
     <script src="script.js"></script>
 </body>
 </html> 
