@@ -1,9 +1,3 @@
-// Google Analytics 配置
-window.dataLayer = window.dataLayer || [];
-function gtag(){dataLayer.push(arguments);}
-gtag('js', new Date());
-gtag('config', 'G-6Z8KV5R1TW');
-
 // 页面加载完成后执行
 document.addEventListener('DOMContentLoaded', function() {
     // 初始化页面过渡动画
